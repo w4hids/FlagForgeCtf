@@ -1,0 +1,747 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <title>Flag Forge (CTF)-Breach the Gates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hack In Hub">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/HackInHub-Logo2.png">
+  <link href="css/navbar.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/center.css" rel="stylesheet">
+  <link href="css/aos.css" rel="stylesheet">
+  <link href="css/domain.css" rel="stylesheet">
+  <link href="css/footer.css" rel="stylesheet">
+  <script src="js/aos.js"></script>
+  <script src="js/powerglitch.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <style>
+    * {margin: 0; padding: 0}
+    body {
+  background: #000;
+  position: relative;
+  z-index: 0; /* Ensures body content stays above the canvas */
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Keeps the canvas in the background */
+  background: black;
+  pointer-events: none; /* Prevents canvas from intercepting clicks */
+}
+
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+
+    #parent-container {
+      margin: 0 auto;
+      height: 400px;
+      width: 800px;
+      max-width: 100%;
+      overflow: hidden;
+      position: relative;
+      background: rgb(0, 0, 0);
+    }
+
+    #parent-container input[type=radio] {
+      display: none;
+    }
+
+    #parent-container label {
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    #slides {
+      padding: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    #overflow {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #frame1:checked~#slides .inner {
+      margin-left: 0;
+    }
+
+    #frame2:checked~#slides .inner {
+      margin-left: -100%;
+    }
+
+    #slides .inner {
+      transition: margin-left 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+      width: 200%;
+      line-height: 0;
+      height: 300px;
+    }
+
+    #slides .frame {
+      width: 50%;
+      float: left;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      color: black;
+    }
+
+    #controls {
+      margin: -180px 0 0 0;
+      width: 100%;
+      height: 50px;
+      z-index: 3;
+      position: relative;
+    }
+
+    #controls label {
+      transition: opacity 0.2s ease-out;
+      display: none;
+      width: 50px;
+      height: 50px;
+      opacity: .4;
+    }
+
+    #controls label:hover {
+      opacity: 1;
+    }
+
+    #parent-container input[type=radio]:checked~#controls label:nth-child(2),
+    #parent-container input[type=radio]:checked~#controls label:nth-child(1) {
+      float: right;
+      margin: 0 -50px 0 0;
+      display: block;
+    }
+
+    #parent-container input[type=radio]:checked~#controls label:nth-last-child(2),
+    #parent-container input[type=radio]:checked~#controls label:nth-last-child(1) {
+      float: left;
+      margin: 0 0 0 -50px;
+      display: block;
+    }
+
+    #bullets {
+      margin: 150px 0 0;
+      text-align: center;
+    }
+
+    #bullets label {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 100%;
+      background: #ccc;
+      margin: 0 10px;
+    }
+
+    #parent-container input[type=radio]:checked~#bullets label:nth-child(1),
+    #parent-container input[type=radio]:checked~#bullets label:nth-child(2) {
+      background: #444;
+    }
+  </style>
+</head>
+<body id="hackathon">
+  <canvas id="matrixCanvas"></canvas>
+  <div id="particles-js"></div>
+  <nav class="header-nav">
+    <div class="branding">
+        <a href="/"><img class="theinevitable" src="images/HackInHub-Logo.png" alt=""></a>
+        <h4 class="brand-name">Flag Forge (CTF) -Breach the Gates 
+        </h4>
+    </div>
+    <div class="nav-buttons" style="display: flex; justify-content: center; gap: 10px; margin: 10px;">
+      <a href="https://forms.gle/sUpNaSQtvjypgjQU9" class="nav-btn ghost-btn" target="_blank" 
+         style="padding: 10px 20px; background-color: #fff; border: 2px solid #000; text-decoration: none; 
+                color: #000; font-weight: bold; text-align: center; display: inline-block;">
+         REGISTER
+      </a>
+      <a href="/Flag_Forge_CTF.pdf" class="nav-btn ghost-btn" target="_blank" 
+         style="padding: 10px 20px; background-color: #fff; border: 2px solid #000; text-decoration: none; 
+                color: #000; font-weight: bold; text-align: center; display: inline-block;">
+          BROCHURE
+      </a>
+  </div>
+  
+  <!-- Mobile responsiveness (using inline media query in a <style> tag) -->
+  <style>
+    @media (max-width: 768px) {
+      .nav-buttons {
+          flex-direction: column !important;
+          align-items: center !important;
+      }
+      .nav-btn {
+          width: 80% !important;
+          margin-bottom: 10px !important;
+      }
+    }
+  </style>
+  </nav>
+  <center>
+    <div id="parent-container">
+      <div class="standard-image">
+          <img src="images/HackInHub-Logo.png" alt="HackInHub Logo">
+      </div>
+  </div>
+  
+  <style>
+      #parent-container {
+          width: 300px; /* Set the frame width */
+          height: 300px; /* Set the frame height */
+          overflow: hidden; /* Ensure anything outside the frame is hidden */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 2px solid #000; /* Optional: Add a border for clarity */
+      }
+  
+      .standard-image img {
+          max-width: 100%; /* Ensure the image scales down to fit the width */
+          max-height: 100%; /* Ensure the image scales down to fit the height */
+          object-fit: contain; /* Maintain aspect ratio while fitting within the frame */
+      }
+  </style>
+    <h1 class="join-build-learn">CAPTURE THE FLAG</h1>
+    <p class="desc">
+      Flag Forge (CTF) -Breach the Gates  is an exhilarating and innovative <span>5 Hours Hackathon</span> that aims to bring together bright minds and creative thinkers from various institutions to collaborate, 
+      ideate and innovate in the realm of technology and beyond. It is an excellent opportunity for students to showcase their skills, network with peers and gain valuable experience in problem-solving.</p>
+      <br id="schedule-mobile">
+    <a class="page-button" href="https://forms.gle/sUpNaSQtvjypgjQU9" target="_blank" 
+       style="display: inline-block; padding: 10px 20px; background-color: #fff; border: 2px solid #000; color: #000; font-weight: bold; text-align: center; text-decoration: none; font-size: 16px; transition: background-color 0.3s, transform 0.3s ease; margin-top: 10px;" 
+       onmouseover="this.style.backgroundColor='#f1f1f1'; this.style.transform='scale(1.05)';" 
+       onmouseout="this.style.backgroundColor='#fff'; this.style.transform='scale(1)';"
+       onmousedown="this.style.backgroundColor='#ddd';" 
+       onmouseup="this.style.backgroundColor='#f1f1f1';">
+       REGISTER NOW
+    </a>
+    <br>
+  </center>
+  <br>
+
+  <div class="sponsors-container">
+    <h2 class="sponsors-header">SPONSORS</h2>
+    <div class="sponsor">
+        <img src="images/ASVerticalWhiteOutlineLogo.png" class="sponsor-logo" alt="Altered Security Logo">
+        <p class="sponsor-description">
+            Altered Security is an edtech with focus on hands-on learning through its red team training platform and cyber ranges. 
+            We are experts in red team training, InfoSec education platform, and cyber ranges. 
+            We pioneered affordable red team labs and have trained more than 25000+ information security professionals 
+            from more than 130+ countries across the globe through our in-person and online trainings.
+        </p>
+    </div>
+    <div class="sponsor">
+        <img src="images/Cyberfortix.png" class="sponsor-logo" alt="Cyberfortix Logo">
+        <p class="sponsor-description">
+            Cyberfortix leads in cybersecurity, offering expert-led training programs that equip individuals with in-demand skills, 
+            from foundational to advanced techniques. We also provide tailored cybersecurity services for businesses, 
+            including risk assessments, vulnerability testing, and threat monitoring, to protect critical digital assets. 
+            Our solutions ensure organizations are prepared to tackle today’s evolving cybersecurity challenges effectively.
+        </p>
+    </div>
+</div>
+
+<style>
+/* Glassy effect for Sponsors container */
+.sponsors-container {
+    text-align: center;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.122); /* Semi-transparent background */
+    border-radius: 15px;
+    margin: 20px auto;
+    max-width: 800px; /* Limit container width */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.838); /* Subtle shadow for depth */
+    backdrop-filter: blur(1px); /* Glassy blur effect */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Optional: Border to define edges */
+}
+
+/* Header for Sponsors */
+.sponsors-header {
+    font-size: 45px;
+    font-weight: bold;
+    color: #f2ff01;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateX(100px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Sponsor Container */
+.sponsor {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3); /* Darker translucent background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    opacity: 0; /* Initially hidden */
+    transform: translateX(100px); /* Slide in from the right */
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Sponsor Logo */
+.sponsor-logo {
+    max-width: 100%;
+    width: 300px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Sponsor Description */
+.sponsor-description {
+    font-size: 22px;
+    color: #4ba6f1; /* Light blue text */
+    text-align: justify;
+    margin: 0 auto;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .sponsor-logo {
+        width: 250px;
+    }
+    .sponsor-description {
+        font-size: 0.9rem;
+    }
+    .sponsors-header {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sponsor-logo {
+        width: 200px;
+    }
+    .sponsor-description {
+        font-size: 0.8rem;
+    }
+    .sponsors-header {
+        font-size: 18px;
+    }
+}
+</style>
+
+<script>
+    // Wait for DOM content to load
+    document.addEventListener("DOMContentLoaded", () => {
+        const elements = document.querySelectorAll(".sponsors-header, .sponsor");
+
+        // Create Intersection Observer
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = "translateX(0)";
+                        observer.unobserve(entry.target); // Stop observing after animation is triggered
+                    }
+                });
+            },
+            { threshold: 0.2 } // Trigger when 20% of the element is visible
+        );
+
+        // Observe each element
+        elements.forEach((el) => observer.observe(el));
+    });
+</script>
+
+
+
+<div class="levels-container">
+  <h2 class="levels-header">LEVELS</h2>
+  <div class="level">
+      <h3 class="level-title">Level 1</h3>
+      <p class="level-description">Basic Hacking and OSINT</p>
+  </div>
+  <div class="level">
+      <h3 class="level-title">Level 2</h3>
+      <p class="level-description">Intermediate Level and Decoding Codes</p>
+  </div>
+  <div class="level">
+      <h3 class="level-title">Level 3</h3>
+      <p class="level-description">Hack Cloud Machines and Raspberry Pi</p>
+  </div>
+</div>
+
+<style>
+  /* Glassy effect for Levels container */
+  .levels-container {
+      text-align: center;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.122); /* Semi-transparent background */
+      border-radius: 15px;
+      margin: 20px auto;
+      max-width: 800px; /* Limit container width */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.838); /* Subtle shadow for depth */
+      backdrop-filter: blur(1px); /* Glassy blur effect */
+      border: 1px solid rgba(255, 255, 255, 0.1); /* Optional: Border to define edges */
+  }
+
+  /* Header for Levels */
+  .levels-header {
+      font-size: 45px;
+      font-weight: bold;
+      color: #f2ff01;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateX(100px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  /* Level Container */
+  .level {
+      margin: 20px 0;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.3); /* Darker translucent background */
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      opacity: 0; /* Initially hidden */
+      transform: translateX(100px); /* Slide in from the right */
+      transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  /* Level Title */
+  .level-title {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #ff0000; /* Red text */
+  }
+
+  /* Level Description */
+  .level-description {
+      font-size: 22px;
+      color: #4ba6f1; /* Light blue text */
+  }
+
+  /* Global body styling */
+  body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom, #1e1e1e, #333); /* Dark gradient background */
+      color: white;
+      line-height: 1.6;
+  }
+</style>
+
+<script>
+  // Wait for DOM content to load
+  document.addEventListener("DOMContentLoaded", () => {
+      const elements = document.querySelectorAll(".levels-header, .level");
+
+      // Create Intersection Observer
+      const observer = new IntersectionObserver(
+          (entries) => {
+              entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                      entry.target.style.opacity = 1;
+                      entry.target.style.transform = "translateX(0)";
+                      observer.unobserve(entry.target); // Stop observing after animation is triggered
+                  }
+              });
+          },
+          { threshold: 0.2 } // Trigger when 20% of the element is visible
+      );
+
+      // Observe each element
+      elements.forEach((el) => observer.observe(el));
+  });
+</script>
+
+
+<div class="prizes-container">
+  <h2 class="prizes-header">PRIZES</h2>
+  <div class="prize">
+      <h3 class="prize-title">First Winner</h3>
+      <p class="prize-description">CRTP Certificate Exam Voucher</p>
+  </div>
+  <div class="prize">
+      <h3 class="prize-title">Second Winner</h3>
+      <p class="prize-description">Mechanical Keyboard</p>
+  </div>
+  <div class="prize">
+      <h3 class="prize-title">Third Winner</h3>
+      <p class="prize-description">TP-Link Wi-Fi Adapter</p>
+  </div>
+</div>
+
+<style>
+  /* Glassy effect for Prizes container */
+  .prizes-container {
+      text-align: center;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.122); /* Semi-transparent background */
+      border-radius: 15px;
+      margin: 20px auto;
+      max-width: 800px; /* Limit container width */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.838); /* Subtle shadow for depth */
+      backdrop-filter: blur(1px); /* Glassy blur effect */
+      border: 1px solid rgba(255, 255, 255, 0.1); /* Optional: Border to define edges */
+  }
+
+  /* Header for Prizes */
+  .prizes-header {
+      font-size: 45px;
+      font-weight: bold;
+      color: #f2ff01;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateX(100px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  /* Prize Container */
+  .prize {
+      margin: 20px 0;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.3); /* Darker translucent background */
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      opacity: 0; /* Initially hidden */
+      transform: translateX(100px); /* Slide in from the right */
+      transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  /* Prize Title */
+  .prize-title {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #ff0000; /* Red text */
+  }
+
+  /* Prize Description */
+  .prize-description {
+      font-size: 22px;
+      color: #4ba6f1; /* Light blue text */
+  }
+
+  /* Global body styling */
+  body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom, #1e1e1e, #333); /* Dark gradient background */
+      color: white;
+      line-height: 1.6;
+  }
+</style>
+
+<script>
+  // Wait for DOM content to load
+  document.addEventListener("DOMContentLoaded", () => {
+      const elements = document.querySelectorAll(".prizes-header, .prize");
+
+      // Create Intersection Observer
+      const observer = new IntersectionObserver(
+          (entries) => {
+              entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                      entry.target.style.opacity = 1;
+                      entry.target.style.transform = "translateX(0)";
+                      observer.unobserve(entry.target); // Stop observing after animation is triggered
+                  }
+              });
+          },
+          { threshold: 0.2 } // Trigger when 20% of the element is visible
+      );
+
+      // Observe each element
+      elements.forEach((el) => observer.observe(el));
+  });
+</script>
+
+  </main>
+  
+  
+  <footer id="footer" style="position: relative; padding: 20px; text-align: center; margin: 0 auto;">
+    <div class="contact-card" style="margin-bottom: 20px;">
+        <center><b>CONTACT</b></center>
+        <br>
+        <div class="profile" style="display: flex; align-items: center; justify-content: center; flex-direction: column; margin: 10px 0;">
+            <div>
+                <img src="images/person.png" alt="Mr. Wahid Samani" style="width: 40px; height: 40px;">
+                <div>Mr. Wahid Samani</div>
+                <div>
+                    <img src="images/phone.png" alt="Phone" style="width: 40px; height: 40px;">
+                    <a href="tel:+918291067053">+91 8291067053</a>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="profile" style="display: flex; align-items: center; justify-content: center; flex-direction: column; margin: 10px 0;">
+            <div>
+                <img src="images/person.png" alt="Mr. Aaryaman Singh" style="width: 40px; height: 40px;">
+                <div>Mr. Aaryaman Singh</div>
+                <div>
+                    <img src="images/phone.png" alt="Phone" style="width: 40px; height: 40px;">
+                    <a href="tel:+918169860623">+91 81698 60623</a>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <!-- Location Map Section -->
+    <div class="location-card" style="margin-bottom: 20px;">
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2980.0469228384327!2d72.90682137395137!3d19.086967551630597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c62d45927ad1%3A0x9ee4301782e456bd!2sRamniranjan%20Jhunjhunwala%20College%20of%20Arts.%20Science%20%26%20Commerce%20(Empowered%20Autonomous%20Status)!5e1!3m2!1sen!2sin!4v1733983766741!5m2!1sen!2sin" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+        <br>
+        <div class="address" style="text-align: center; margin-top: 10px;">
+            <span>
+                <a href="https://www.rjcollege.edu.in" target="_blank">Basic Hacking
+                    Ramniranjan Jhunjhunwala College of Arts
+                </a>
+            </span>
+            <p>GHATKOPAR WEST</p>
+            <p>MUMBAI-400086 MAHARASHTRA</p>
+        </div>
+    </div>
+
+    <!-- Social Media Section -->
+    <div class="social-media" style="display: flex; justify-content: flex-start; gap: 30px; margin-top: 20px;">
+        <a href="https://www.instagram.com/flagforgeofficial/" target="_blank">
+            <img src="images/instagram.png" alt="Instagram" class="social-icon" style="width: 60px; height: auto; transition: transform 0.3s ease;">
+        </a>
+        <a href="https://www.linkedin.com/in/yourlinkedinpage" target="_blank">
+            <img src="images/linkedin.svg" alt="LinkedIn" class="social-icon" style="width: 60px; height: auto; transition: transform 0.3s ease;">
+        </a>
+    </div>
+</footer>
+
+<style>
+  /* Glassy effect for the footer container */
+  #footer {
+      position: relative;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.122); /* Semi-transparent background */
+      border-radius: 15px; /* Smooth rounded corners */
+      margin: 0 auto;
+      max-width: 1200px; /* Limit container width */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.838); /* Subtle shadow for depth */
+      backdrop-filter: blur(1px); /* Glassy blur effect */
+      border: 1px solid rgba(255, 255, 255, 0.1); /* Optional: Border to define edges */
+      text-align: center;
+  }
+
+  /* Contact card, social media, and location card containers */
+  .contact-card,
+  .social-media,
+  .location-card {
+      margin-bottom: 20px;
+  }
+
+  /* Profile container inside the contact card */
+  .profile {
+      display: flex;
+      flex-direction: column; /* Ensure name and phone number are on separate lines */
+      align-items: center;
+      margin: 10px 0;
+  }
+
+  .profile img {
+      width: 40px;
+      height: 40px;
+  }
+
+  .profile div {
+      margin-top: 5px;
+  }
+
+  /* Social media section aligned to the left */
+  .social-media {
+      display: flex;
+      justify-content: flex-start; /* Align left */
+      gap: 30px;
+      margin-top: 20px;
+  }
+
+  .social-icon {
+      width: 60px;
+      height: auto;
+      transition: transform 0.3s ease;
+  }
+
+  .social-icon:hover {
+      transform: scale(1.1);
+  }
+
+  /* Location card and square map */
+  .map-container iframe {
+      width: 100%;
+      height: 350px; /* Smaller map from the bottom */
+      aspect-ratio: 1 / 1; /* Maintain square aspect ratio */
+  }
+
+  .address {
+      text-align: center;
+      margin-top: 10px;
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+      .profile {
+          flex-direction: column;
+          align-items: center;
+      }
+
+      .social-media {
+          gap: 20px;
+      }
+
+      .social-icon {
+          width: 50px;
+      }
+
+      .location-card iframe {
+          height: 300px; /* Smaller map on smaller screens */
+      }
+  }
+
+  @media (max-width: 480px) {
+      .social-icon {
+          width: 45px;
+      }
+
+      .location-card iframe {
+          height: 250px; /* Even smaller map on very small screens */
+      }
+  }
+</style>
+
+<a href="#" class="top">↑</a>
+<p class="sub-title" style="margin-top: 5px;">Developed by Sudesh Rajbhar @INFTECHCORE</p>
+
+
+<!-- Include necessary scripts -->
+<script src="js/domain.js"></script>
+<script src="js/navbar.js"></script>
+<!-- <script src="js/particles.js"></script> -->
+<script src="js/matrix.js"></script>
+<script src="js/app.js"></script>
+
+<!-- Initialize AOS and slider -->
+<script>
+    // Initialize AOS (Animate on Scroll)
+    AOS.init();
+
+    // Automatic slider that changes frames every 2 seconds
+    setInterval(function () {
+        var currentFrame = document.querySelector('input[name="frame"]:checked');
+        var nextFrame = currentFrame.nextElementSibling || document.getElementById("frame1");
+        nextFrame.checked = true;
+    }, 2000);
+</script>
+
+
+</body></html>
